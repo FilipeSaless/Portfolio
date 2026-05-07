@@ -1,3 +1,41 @@
+// Language Switching
+const langToggle = document.getElementById('lang-toggle');
+let currentLang = localStorage.getItem('language') || 'en';
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('language', lang);
+
+  // Update toggle checkbox state
+  langToggle.checked = lang === 'pt';
+
+  // Update text content
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if (el.dataset.en && el.dataset.pt) {
+      el.textContent = lang === 'en' ? el.dataset.en : el.dataset.pt;
+    }
+  });
+
+  // Update form placeholders
+  document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+    el.placeholder = lang === 'en' ? el.dataset.enPlaceholder : el.dataset.ptPlaceholder;
+  });
+
+  // Update button text
+  const submitBtn = document.querySelector('.contact-form .btn');
+  if (submitBtn) {
+    submitBtn.textContent = lang === 'en' ? submitBtn.dataset.en : submitBtn.dataset.pt;
+  }
+}
+
+// Language toggle listener
+langToggle.addEventListener('change', () => {
+  switchLanguage(langToggle.checked ? 'pt' : 'en');
+});
+
+// Set initial language
+switchLanguage(currentLang);
+
 // Mobile Menu Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
